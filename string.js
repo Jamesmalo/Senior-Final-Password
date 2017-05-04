@@ -7,7 +7,7 @@ function PasswordMessage(m){
 
 function inRange(char,min,max){
     let unicode = char.charCodeAt(0);
-    if(char <= min || char >= max){
+    if(unicode <= min || unicode >= max){
       return true;
     }
     else{
@@ -42,8 +42,8 @@ exports.containsUpper = function(str){
      if (str[i] <= 65 || str[i] >= 90){
        return hasUpper = true;
      }
-     else{
-       throw new Error("This password does not have a capital letter.");
+     if(hasUpper == false){
+       throw new PasswordMessage("This password does not have a capital letter.");
      }
    }
  }
@@ -56,11 +56,11 @@ exports.containsLower = function(str){
   let hasLower = false;
   try{
     for(var i = 0; i < str.length; i++){
-      if (str[i] <= 97 || str[i] >= 122){
+      if (str[i] <= 97 && str[i] >= 122){
         return hasLower = true;
       }
-      else{
-        throw new Error("This password does not have a lower case letter.");
+      if(hasLower == false){
+        throw new PasswordMessage("This password does not have a lower case letter.");
       }
     }
   }
@@ -73,11 +73,11 @@ exports.containsNumerical = function(str){
   let hasNumerical = false;
   try{
     for(var i = 0; i < str.length; i++){
-      if (str[i] <= 48 || str[i] >= 57){
+      if (str[i] <= 48 && str[i] >= 57){
         return hasNumerical = true;
       }
-      else{
-        throw new Error("This password does not have a number in it.");
+      if(hasNumerical == false){
+        throw new PasswordMessage("This password does not have a number in it.");
       }
     }
   }
@@ -92,13 +92,17 @@ exports.containsSpecial = function(str){
   try{
     for(var i = 0; i < str.length; i++){
       for (var b = 0; b < specialList.length; b++){
-        return hasSpecial = true;
+        if(str[i].charCodeAt(0) == specialList[i]){
+          return hasSpecial = true;
+        }
       }
-      throw new Error("This password does not have a special character in it.")
+      if(hasSpecial == false){
+        throw new PasswordMessage("This password does not have a special character in it.")
     }
   }
   catch(e){
     console.log(e.name+": "+e.message);
     return hasSpecial;
   }
+ }
 }
